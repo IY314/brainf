@@ -130,7 +130,9 @@ def compile_bf(nodes, filename, spaces=4, indent_level=1, _c_code=None):
             c_code += f'{tab}tape[ptr] = (int) getchar();\n'
         elif isinstance(node, LoopNode):
             c_code += f'{tab}while (tape[ptr] != 0) {{\n'
-            c_code = compile_bf(node.nodes, filename, spaces, indent_level + 1, c_code)
+            c_code = compile_bf(
+                node.nodes, filename, spaces, indent_level + 1, c_code
+            )
             c_code += f'{tab}}}\n'
     
     if _c_code is not None:
@@ -138,7 +140,7 @@ def compile_bf(nodes, filename, spaces=4, indent_level=1, _c_code=None):
     c_code += f'{tab}return 0;\n}}\n'
     with open(f'{filename}.c', 'w+') as f:
         f.write(c_code)
-    subprocess.run(['clang', f'{filename}.c', '-o', f'{filename.rstrip(".bf")}'])
+    subprocess.run(['gcc', f'{filename}.c', '-o', f'{filename.rstrip(".bf")}'])
     os.remove(f'{filename}.c')
 
 
@@ -169,8 +171,12 @@ def evaluate_bf(nodes, context=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--shell', '-s', action='store_true', help='Activate in shell mode')
-    parser.add_argument('--file', '-f', help='the input file')
+    parser.add_argument(
+        '--shell', '-s', action='store_true', help='Activate in shell mode'
+    )
+    parser.add_argument(
+        '--file', '-f', help='the input file'
+    )
     args = parser.parse_args()
     if args.shell:
         while True:
