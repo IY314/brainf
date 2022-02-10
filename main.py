@@ -160,6 +160,8 @@ def evaluate_bf(nodes, context=None):
                 context.storage.append(0)
         elif isinstance(node, PrintCellNode):
             print(chr(context.storage[context.pointer]), end='')
+        elif isinstance(node, GetInputNode):
+            pass
         elif isinstance(node, LoopNode):
             while context.storage[context.pointer] != 0:
                 evaluate_bf(node.nodes, context)
